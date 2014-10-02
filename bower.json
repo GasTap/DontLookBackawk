@@ -1,0 +1,11 @@
+{
+    "name": "spr-widget-audio-player",
+    "version": "0.1.0",
+    "dependencies": {
+        "requirejs": "~2",
+        "requirejs-text": "~2",
+        "almond": "~0.2",
+        "jquery": "2.1.0",
+        "createjs": "http://code.createjs.com/createjs-2013.12.12.min.js"
+    }
+}
