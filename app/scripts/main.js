@@ -7,16 +7,19 @@ define (function(require){
 
     var CreateJS = require('createjs');
 
+    var Game = require('gameStuff/game');
+
+    var game;
+
     function init() {
         document.body.innerHTML = '<canvas id="gameCanvas" width="800" height="600"></canvas>';
-        this.stage = new CreateJS.Stage(document.getElementById("gameCanvas"));
-        // TODO create game with stage
+        var stage = new CreateJS.Stage(document.getElementById("gameCanvas"));
+        game = new Game(stage);
         gameLoop();
     }
 
     function gameLoop () {
-        // TODO game.update()
-        console.log("working");
+        game.update.call(game);
         requestAnimationFrame(gameLoop);
     }
 
