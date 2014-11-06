@@ -3,23 +3,18 @@ using System.Collections;
 
 public class Egg : MonoBehaviour {
 
-	public int crackTimer = 20;
-	public bool broken = false;
+	private double crackVelocity = 7.5;
+	private bool broken = false;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
 	void Update () {
-		crackTimer -= 1;
 		if (this.GetComponent<PlatformCollider>().grounded) {
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.99f, rigidbody2D.velocity.y);
-			if (crackTimer <= 0) {
+
+			if (rigidbody2D.velocity.magnitude > crackVelocity && !broken) {
+				Debug.Log(rigidbody2D.velocity.magnitude);
+				Debug.Log(crackVelocity);
 				breakEgg();
 			}
-			crackTimer = 30;
 		}
 	}
 
