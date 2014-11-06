@@ -6,8 +6,8 @@ public class LevelData {
 	public static string NO_LEVEL = "";
 
 	public string name = "main";
-	public int x = 0;
-	public int y = 0;
+	public float offsetX = 0;
+	public float offsetY = 0;
 	public string left = NO_LEVEL;
 	public string right = NO_LEVEL;
 	public string top = NO_LEVEL;
