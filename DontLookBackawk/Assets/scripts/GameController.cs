@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour {
 		foreach (Object o in staticObjects) {
 			DontDestroyOnLoad(o);
 		}
-		currentLevelData = LevelSpawner.loadLevel("level1", cachedPlayerPosition, cachedPlayerVelocity);
+		currentLevelData = LevelSpawner.loadLevel("level7", cachedPlayerPosition, cachedPlayerVelocity);
 	}
 
 	public const int TOP = 0;

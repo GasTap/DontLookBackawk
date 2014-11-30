@@ -20,8 +20,22 @@ public class GameData {
 			.set ("offsetX", -9.246f),
 		new LevelData ()
 			.set ("name", "level4")
-			.set ("offsetY", 4.039929f)
+			.set ("offsetY", 4.3882f)
 			.set ("left", "level3")
+			.set ("right", "level5"),
+		new LevelData ()
+			.set ("name", "level5")
+			.set ("offsetY", 1.42216f)
+			.set ("left", "level4")
+			.set ("right", "level6"),
+		new LevelData ()
+			.set ("name", "level6")
+			.set ("left", "level5")
+			.set ("right", "level7"),
+		new LevelData ()
+			.set ("name", "level7")
+			.set ("left", "level6")
+			.set ("right", "level8")
 
 	};
 

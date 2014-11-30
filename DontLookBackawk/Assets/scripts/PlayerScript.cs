@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerScript : MonoBehaviour {	
-	private float jumpPow = 9f;
+	private float jumpPow = 8f;
 	private float flyPow = 3f;
 	private float horAccel = 0.5f;
 	private float horAccelAir = 0.2f;
@@ -112,27 +112,18 @@ public class PlayerScript : MonoBehaviour {
 	void handleLevelChange () {
 		bool changed = false;
 		Vector2 pos = this.transform.position;
-		bool hit = false;
 		if (pos.x > xBound) {
 			changed = GameController.playerChangeLevel(GameController.RIGHT, new Vector2(-xBound, pos.y), this.rigidbody2D.velocity);
-			pos = GameController.cachedPlayerPosition;
 			pos.x = changed ? -xBound : xBound;
-			hit = true;
 		} else if (pos.x < -xBound) {
 			changed = GameController.playerChangeLevel(GameController.LEFT, new Vector2(xBound, pos.y), this.rigidbody2D.velocity);
-			pos = GameController.cachedPlayerPosition;
 			pos.x = changed ? xBound : -xBound;
-			hit = true;
 		} else if (pos.y > yBound) {
 			changed = GameController.playerChangeLevel(GameController.TOP, new Vector2(pos.x, -yBound), this.rigidbody2D.velocity);
-			pos = GameController.cachedPlayerPosition;
-			pos.y = changed ? -yBound : yBound;
-			hit = true;
+			pos.y = yBound;
 		} else if (pos.y < -yBound) {
 			changed = GameController.playerChangeLevel(GameController.BOTTOM, new Vector2(pos.x, yBound), this.rigidbody2D.velocity);
-			pos = GameController.cachedPlayerPosition;
 			pos.y = changed ? yBound : -yBound;
-			hit = true;
 		}
 		setPos(pos);
 	}

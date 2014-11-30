@@ -1,10 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/GameData.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/PlayerScript.cs">
     <Files>
-      <File FileName="Assets/scripts/LevelSpawner.cs" Line="11" Column="1" />
-      <File FileName="Assets/scripts/LevelData.cs" Line="6" Column="30" />
-      <File FileName="Assets/scripts/GameData.cs" Line="7" Column="19" />
+      <File FileName="Assets/scripts/GameData.cs" Line="38" Column="26" />
+      <File FileName="Assets/scripts/PlayerScript.cs" Line="5" Column="27" />
+      <File FileName="Assets/scripts/GameController.cs" Line="18" Column="52" />
+      <File FileName="Assets/scripts/LevelSpawner.cs" Line="19" Column="42" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
