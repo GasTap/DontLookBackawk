@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
+	private static LevelLoader levelLoader;
+
 	public static LevelData currentLevelData;
 
 	public static Vector2 cachedPlayerPosition = new Vector2(0,0);
@@ -11,42 +13,42 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		// TODO set player start pos in first level
 		Debug.Log("initialising game");
-		Object[] staticObjects = GameObject.FindObjectsOfType(typeof(MonoBehaviour));
-		foreach (Object o in staticObjects) {
+		Object[] staticObjects = GameObject.FindObjectsOfType(typeof(GameObject));
+		foreach (GameObject o in staticObjects) {
 			DontDestroyOnLoad(o);
+			LevelLoader ll = o.GetComponent<LevelLoader>();
+			Debug.Log(ll);
+			if (ll) {
+				levelLoader = ll;
+			}
 		}
-		currentLevelData = LevelSpawner.loadLevel("level7", cachedPlayerPosition, cachedPlayerVelocity);
+		levelLoader.loadLevel("level7");
 	}
-
-	public const int TOP = 0;
-	public const int BOTTOM = 1;
-	public const int LEFT = 2;
-	public const int RIGHT = 3;
 
 	// true if level can be changed, false if died
 	public static bool playerChangeLevel (int dir, Vector2 pos, Vector2 vel) {
 		switch (dir) {
-		case RIGHT:
-			if (currentLevelData.right != LevelData.NO_LEVEL) {
-				currentLevelData = LevelSpawner.loadLevel(currentLevelData.right, pos, vel);
+		case LevelData.RIGHT:
+			if (currentLevelData.rightExit != LevelData.NO_LEVEL) {
+				levelLoader.loadLevel(currentLevelData.rightExit, pos, vel, LevelData.RIGHT);
 				return true;
 			}
 			break;
-		case LEFT:
-			if (currentLevelData.left != LevelData.NO_LEVEL) {
-				currentLevelData = LevelSpawner.loadLevel(currentLevelData.left, pos, vel);
+		case LevelData.LEFT:
+			if (currentLevelData.leftExit != LevelData.NO_LEVEL) {
+				levelLoader.loadLevel(currentLevelData.leftExit, pos, vel, LevelData.LEFT);
 				return true;
 			}
 			break;
-		case TOP:
-			if (currentLevelData.top != LevelData.NO_LEVEL) {
-				currentLevelData = LevelSpawner.loadLevel(currentLevelData.top, pos, vel);
+		case LevelData.TOP:
+			if (currentLevelData.topExit != LevelData.NO_LEVEL) {
+				levelLoader.loadLevel(currentLevelData.topExit, pos, vel, LevelData.TOP);
 				return true;
 			}
 			break;
-		case BOTTOM:
-			if (currentLevelData.bottom != LevelData.NO_LEVEL) {
-				currentLevelData = LevelSpawner.loadLevel(currentLevelData.bottom, pos, vel);
+		case LevelData.BOTTOM:
+			if (currentLevelData.bottomExit != LevelData.NO_LEVEL) {
+				levelLoader.loadLevel(currentLevelData.bottomExit, pos, vel, LevelData.BOTTOM);
 				return true;
 			}
 			break;

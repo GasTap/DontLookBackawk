@@ -106,23 +106,22 @@ public class PlayerScript : MonoBehaviour {
 		previouslyGrounded = grounded;
 
 		handleLevelChange();
-		Debug.Log(this.transform.position.x);
 	}
 
 	void handleLevelChange () {
 		bool changed = false;
 		Vector2 pos = this.transform.position;
 		if (pos.x > xBound) {
-			changed = GameController.playerChangeLevel(GameController.RIGHT, new Vector2(-xBound, pos.y), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.RIGHT, new Vector2(-xBound, pos.y), this.rigidbody2D.velocity);
 			pos.x = changed ? -xBound : xBound;
 		} else if (pos.x < -xBound) {
-			changed = GameController.playerChangeLevel(GameController.LEFT, new Vector2(xBound, pos.y), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.LEFT, new Vector2(xBound, pos.y), this.rigidbody2D.velocity);
 			pos.x = changed ? xBound : -xBound;
 		} else if (pos.y > yBound) {
-			changed = GameController.playerChangeLevel(GameController.TOP, new Vector2(pos.x, -yBound), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.TOP, new Vector2(pos.x, -yBound), this.rigidbody2D.velocity);
 			pos.y = yBound;
 		} else if (pos.y < -yBound) {
-			changed = GameController.playerChangeLevel(GameController.BOTTOM, new Vector2(pos.x, yBound), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.BOTTOM, new Vector2(pos.x, yBound), this.rigidbody2D.velocity);
 			pos.y = changed ? yBound : -yBound;
 		}
 		setPos(pos);

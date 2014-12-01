@@ -3,19 +3,25 @@ using System.Collections;
 
 public class LevelData {
 
-	public static string NO_LEVEL = "";
+	public const int NONE = -1;
+	public const int TOP = 0;
+	public const int BOTTOM = 1;
+	public const int LEFT = 2;
+	public const int RIGHT = 3;
+
+	public static GameObject NO_LEVEL = null;
 
 	public string name = "main";
-	public float offsetX = 0;
-	public float offsetY = 0;
-	public string left = NO_LEVEL;
-	public string right = NO_LEVEL;
-	public string top = NO_LEVEL;
-	public string bottom = NO_LEVEL;
 
-	public LevelData set (string prop, object val) {
-		Debug.Log("setting " + prop + " to " + val);
-		this.GetType().GetField(prop).SetValue(this, val);
-		return this;
-	}
+	public GameObject leftSpawn = NO_LEVEL;
+	public GameObject leftExit = NO_LEVEL;
+
+	public GameObject rightSpawn = NO_LEVEL;
+	public GameObject rightExit = NO_LEVEL;
+
+	public GameObject topSpawn = NO_LEVEL;
+	public GameObject topExit = NO_LEVEL;
+
+	public GameObject bottomSpawn = NO_LEVEL;
+	public GameObject bottomExit = NO_LEVEL;
 }

@@ -46,14 +46,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LevelLoader.cs" />
      <Compile Include="Assets\scripts\CameraScaler.cs" />
      <Compile Include="Assets\scripts\Egg.cs" />
      <Compile Include="Assets\scripts\GameController.cs" />
-     <Compile Include="Assets\scripts\GameData.cs" />
      <Compile Include="Assets\scripts\LevelData.cs" />
-     <Compile Include="Assets\scripts\LevelSpawner.cs" />
      <Compile Include="Assets\scripts\PlatformCollider.cs" />
      <Compile Include="Assets\scripts\PlayerScript.cs" />
+     <Compile Include="Assets\scripts\exit.cs" />
+     <Compile Include="Assets\scripts\spawn.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
