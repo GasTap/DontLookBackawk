@@ -7,8 +7,8 @@ public class GameController : MonoBehaviour {
 
 	public static LevelData currentLevelData;
 
-	public static Vector2 cachedPlayerPosition = new Vector2(0,0);
-	public static Vector2 cachedPlayerVelocity = new Vector2(0,0);
+	//public static Vector2 cachedPlayerPosition = new Vector2(0,0);
+	//public static Vector2 cachedPlayerVelocity = new Vector2(0,0);
 
 	void Start () {
 		// TODO set player start pos in first level
@@ -17,12 +17,11 @@ public class GameController : MonoBehaviour {
 		foreach (GameObject o in staticObjects) {
 			DontDestroyOnLoad(o);
 			LevelLoader ll = o.GetComponent<LevelLoader>();
-			Debug.Log(ll);
 			if (ll) {
 				levelLoader = ll;
 			}
 		}
-		levelLoader.loadLevel("level7");
+		levelLoader.loadLevel("level1");
 	}
 
 	// true if level can be changed, false if died

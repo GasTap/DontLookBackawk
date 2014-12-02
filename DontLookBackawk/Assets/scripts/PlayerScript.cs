@@ -36,7 +36,8 @@ public class PlayerScript : MonoBehaviour {
 	private Animator animator;
 
 	void Start() {
-		this.transform.position = GameController.cachedPlayerPosition;
+		Debug.Log("setting pos");
+		//this.transform.position = GameController.cachedPlayerPosition;
 		animator = this.GetComponent<Animator>();
 	}
 
