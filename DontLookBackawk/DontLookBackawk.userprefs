@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/PlayerScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/GameController.cs">
     <Files>
-      <File FileName="Assets/scripts/PlayerScript.cs" Line="40" Column="5" />
-      <File FileName="Assets/scripts/GameController.cs" Line="30" Column="24" />
+      <File FileName="Assets/scripts/PlayerScript.cs" Line="22" Column="2" />
+      <File FileName="Assets/scripts/GameController.cs" Line="24" Column="32" />
       <File FileName="Assets/scripts/LevelData.cs" Line="12" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>

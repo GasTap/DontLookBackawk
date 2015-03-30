@@ -8,10 +8,10 @@ public class Egg : MonoBehaviour {
 
 	void Update () {
 		if (this.GetComponent<PlatformCollider>().grounded) {
-			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.99f, rigidbody2D.velocity.y);
+			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.99f, GetComponent<Rigidbody2D>().velocity.y);
 
-			if (rigidbody2D.velocity.magnitude > crackVelocity && !broken) {
-				Debug.Log(rigidbody2D.velocity.magnitude);
+			if (GetComponent<Rigidbody2D>().velocity.magnitude > crackVelocity && !broken) {
+				Debug.Log(GetComponent<Rigidbody2D>().velocity.magnitude);
 				Debug.Log(crackVelocity);
 				breakEgg();
 			}
@@ -20,7 +20,7 @@ public class Egg : MonoBehaviour {
 
 	public void breakEgg () {
 		Debug.Log("BREAK");
-		rigidbody2D.fixedAngle = true;
+		GetComponent<Rigidbody2D>().fixedAngle = true;
 		transform.rotation = Quaternion.identity;
 		transform.localScale = new Vector2(transform.localScale.x, 0.1f);
 	}

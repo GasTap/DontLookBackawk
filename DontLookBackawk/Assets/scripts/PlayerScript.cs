@@ -55,8 +55,8 @@ public class PlayerScript : MonoBehaviour {
 		
 		willJump -= 1;
 		if (willJump == 1) {
-			Vector2 newVelocity = new Vector2(rigidbody2D.velocity.x, jumpPow);
-			rigidbody2D.velocity = newVelocity;
+			Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpPow);
+			GetComponent<Rigidbody2D>().velocity = newVelocity;
 		}
 		
 		if (Input.GetKeyDown(KeyCode.X)) {
@@ -64,9 +64,9 @@ public class PlayerScript : MonoBehaviour {
 				animator.SetBool("jumped", true);
 				jump ();
 			} else {
-				if (rigidbody2D.velocity.y <= 0) {
-					Vector2 newVelocity = new Vector2(rigidbody2D.velocity.x, (rigidbody2D.velocity.y + flyPow <= 0) ? rigidbody2D.velocity.y + flyPow : 0);
-					rigidbody2D.velocity = newVelocity;
+				if (GetComponent<Rigidbody2D>().velocity.y <= 0) {
+					Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, (GetComponent<Rigidbody2D>().velocity.y + flyPow <= 0) ? GetComponent<Rigidbody2D>().velocity.y + flyPow : 0);
+					GetComponent<Rigidbody2D>().velocity = newVelocity;
 				}
 			}
 		}
@@ -76,22 +76,22 @@ public class PlayerScript : MonoBehaviour {
 			if (getGrounded()) {
 				animator.SetBool("walking", true);
 			}
-			Vector2 newVelocity = new Vector2(constrainVel(rigidbody2D.velocity.x-(getGrounded() ? horAccel : horAccelAir)), rigidbody2D.velocity.y);
-			rigidbody2D.velocity = newVelocity;
+			Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x-(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
+			GetComponent<Rigidbody2D>().velocity = newVelocity;
 		} else if (Input.GetKey(KeyCode.RightArrow)) {
 			if (getGrounded()) {
 				animator.SetBool("walking", true);
 			}
-			Vector2 newVelocity = new Vector2(constrainVel(rigidbody2D.velocity.x+(getGrounded() ? horAccel : horAccelAir)), rigidbody2D.velocity.y);
-			rigidbody2D.velocity = newVelocity;
+			Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x+(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
+			GetComponent<Rigidbody2D>().velocity = newVelocity;
 		} else {
 			if (grounded) {
-				rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.95f, rigidbody2D.velocity.y);
+				GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
 			}
 		}
 
-		if (this.rigidbody2D.velocity.x != 0) {
-			this.transform.localScale = new Vector2(this.rigidbody2D.velocity.x / (Mathf.Abs(this.rigidbody2D.velocity.x)), this.transform.localScale.y);
+		if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
+			this.transform.localScale = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x / (Mathf.Abs(this.GetComponent<Rigidbody2D>().velocity.x)), this.transform.localScale.y);
 		}
 
 		if (Input.GetKeyDown(KeyCode.Z) && canPeck()) {
@@ -113,16 +113,16 @@ public class PlayerScript : MonoBehaviour {
 		bool changed = false;
 		Vector2 pos = this.transform.position;
 		if (pos.x > xBound) {
-			changed = GameController.playerChangeLevel(LevelData.RIGHT, new Vector2(-xBound, pos.y), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.RIGHT, new Vector2(-xBound, pos.y), this.GetComponent<Rigidbody2D>().velocity);
 			pos.x = changed ? -xBound : xBound;
 		} else if (pos.x < -xBound) {
-			changed = GameController.playerChangeLevel(LevelData.LEFT, new Vector2(xBound, pos.y), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.LEFT, new Vector2(xBound, pos.y), this.GetComponent<Rigidbody2D>().velocity);
 			pos.x = changed ? xBound : -xBound;
 		} else if (pos.y > yBound) {
-			changed = GameController.playerChangeLevel(LevelData.TOP, new Vector2(pos.x, -yBound), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.TOP, new Vector2(pos.x, -yBound), this.GetComponent<Rigidbody2D>().velocity);
 			pos.y = yBound;
 		} else if (pos.y < -yBound) {
-			changed = GameController.playerChangeLevel(LevelData.BOTTOM, new Vector2(pos.x, yBound), this.rigidbody2D.velocity);
+			changed = GameController.playerChangeLevel(LevelData.BOTTOM, new Vector2(pos.x, yBound), this.GetComponent<Rigidbody2D>().velocity);
 			pos.y = changed ? yBound : -yBound;
 		}
 		setPos(pos);
@@ -161,12 +161,12 @@ public class PlayerScript : MonoBehaviour {
 
 	void layEgg () {
 		layEggTimer = 50;
-		Vector2 newVelocity = new Vector2(rigidbody2D.velocity.x + (getGrounded() ? 0 : getDir() * 1), 
-		                                  rigidbody2D.velocity.y - (getGrounded() ? eggBoostVelGround : eggBoostVelAir));
-		rigidbody2D.velocity = newVelocity;
+		Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x + (getGrounded() ? 0 : getDir() * 1), 
+		                                  GetComponent<Rigidbody2D>().velocity.y - (getGrounded() ? eggBoostVelGround : eggBoostVelAir));
+		GetComponent<Rigidbody2D>().velocity = newVelocity;
 		GameObject egg = (GameObject)Instantiate(eggPrefab,eggPos(), Quaternion.identity);
-		egg.rigidbody2D.velocity = new Vector2(getDir() * (getGrounded() ? -0.2f : -1),0.2f);
-		egg.rigidbody2D.angularVelocity = eggPrefab.rigidbody2D.velocity.x;
+		egg.GetComponent<Rigidbody2D>().velocity = new Vector2(getDir() * (getGrounded() ? -0.2f : -1),0.2f);
+		egg.GetComponent<Rigidbody2D>().angularVelocity = eggPrefab.GetComponent<Rigidbody2D>().velocity.x;
 		
 		transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f);
 	}
