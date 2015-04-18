@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour {
 	public GameObject player;
 
 	private void _loadLevel (string name) {
+		GlobalGameState.playerCurrentLevel = name;
 		Application.LoadLevel(name);
 	}
 
@@ -19,6 +20,7 @@ public class LevelLoader : MonoBehaviour {
 	}
 
 	public void loadLevel (GameObject exit, Vector2 nPos, Vector2 velocity, int exitDirection) {
+		GlobalGameState.playerPreviousLevel = GlobalGameState.playerCurrentLevel;
 		lastExitPosition = exit.transform.position;
 		lastPos = nPos;
 		lastVelocity = velocity;

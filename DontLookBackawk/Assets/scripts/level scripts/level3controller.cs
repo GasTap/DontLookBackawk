@@ -5,6 +5,7 @@ public class level3controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (GlobalGameState.playerPreviousLevel != "level2") { return; }
 		var bottomSpawn = GameObject.Find("BottomSpawn");
 		var player = GameObject.Find("Player");
 
