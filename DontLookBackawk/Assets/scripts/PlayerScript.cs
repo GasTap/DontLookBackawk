@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour {	
 	private float jumpPow = 8f;
@@ -21,7 +22,9 @@ public class PlayerScript : MonoBehaviour {
 	private bool previouslyGrounded = false;
 
 	private float xBound = 7f;
-	private float yBound = 4f;
+	private float yBound = (7 * 3 / 4f);
+
+	private bool controlEnabled = true;
 
 	private int stateTimer = 0;
 	private enum State {
@@ -35,9 +38,32 @@ public class PlayerScript : MonoBehaviour {
 	
 	private Animator animator;
 
+	void OnLevelWasLoaded () {
+		var stuff = new List<GameObject>();
+		stuff.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
+		stuff.AddRange(GameObject.FindGameObjectsWithTag("OWPlatform"));
+		stuff.AddRange(GameObject.FindGameObjectsWithTag("Spawn"));
+		stuff.AddRange(GameObject.FindGameObjectsWithTag("Exit"));
+		
+		foreach (GameObject i in stuff) {
+			var a = i.GetComponent<Renderer>().enabled = false;
+		}
+	}
+
+	void disableControl() { setControlEnabled(false); }
+	void enableControl()  { setControlEnabled(true); }
+	void setControlEnabled (bool v) {
+		controlEnabled = v;
+	}
+
+	void disablePhysics() { setPhysicsEnabled(false); }
+	void enablePhysics()  { setPhysicsEnabled(true); }
+	void setPhysicsEnabled (bool v) {
+		this.gameObject.GetComponent<Rigidbody2D>().isKinematic = !v;
+		this.gameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = v ? CollisionDetectionMode2D.Continuous : CollisionDetectionMode2D.None;
+	}
+
 	void Start() {
-		Debug.Log("setting pos");
-		//this.transform.position = GameController.cachedPlayerPosition;
 		animator = this.GetComponent<Animator>();
 	}
 
@@ -52,61 +78,62 @@ public class PlayerScript : MonoBehaviour {
 		if (grounded && !previouslyGrounded) {
 			animator.SetBool("landed", true);
 		}
-		
-		willJump -= 1;
-		if (willJump == 1) {
-			Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpPow);
-			GetComponent<Rigidbody2D>().velocity = newVelocity;
-		}
-		
-		if (Input.GetKeyDown(KeyCode.X)) {
-			if (canJump()) {
-				animator.SetBool("jumped", true);
-				jump ();
-			} else {
-				if (GetComponent<Rigidbody2D>().velocity.y <= 0) {
-					Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, (GetComponent<Rigidbody2D>().velocity.y + flyPow <= 0) ? GetComponent<Rigidbody2D>().velocity.y + flyPow : 0);
-					GetComponent<Rigidbody2D>().velocity = newVelocity;
-				}
-			}
-		}
 
 		animator.SetBool("walking", false);
-		if (Input.GetKey(KeyCode.LeftArrow)) {
-			if (getGrounded()) {
-				animator.SetBool("walking", true);
+
+		if (controlEnabled) { 
+			willJump -= 1;
+			if (willJump == 1) {
+				Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpPow);
+				GetComponent<Rigidbody2D>().velocity = newVelocity;
 			}
-			Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x-(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
-			GetComponent<Rigidbody2D>().velocity = newVelocity;
-		} else if (Input.GetKey(KeyCode.RightArrow)) {
-			if (getGrounded()) {
-				animator.SetBool("walking", true);
+			if (Input.GetKeyDown(KeyCode.X)) {
+				if (canJump()) {
+					animator.SetBool("jumped", true);
+					jump ();
+				} else {
+					if (GetComponent<Rigidbody2D>().velocity.y <= 0) {
+						Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, (GetComponent<Rigidbody2D>().velocity.y + flyPow <= 0) ? GetComponent<Rigidbody2D>().velocity.y + flyPow : 0);
+						GetComponent<Rigidbody2D>().velocity = newVelocity;
+					}
+				}
 			}
-			Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x+(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
-			GetComponent<Rigidbody2D>().velocity = newVelocity;
-		} else {
-			if (grounded) {
-				GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
+
+			if (Input.GetKey(KeyCode.LeftArrow)) {
+				if (getGrounded()) {
+					animator.SetBool("walking", true);
+				}
+				Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x-(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
+				GetComponent<Rigidbody2D>().velocity = newVelocity;
+			} else if (Input.GetKey(KeyCode.RightArrow)) {
+				if (getGrounded()) {
+					animator.SetBool("walking", true);
+				}
+				Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x+(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
+				GetComponent<Rigidbody2D>().velocity = newVelocity;
+			} else {
+				if (grounded) {
+					GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
+				}
 			}
-		}
 
-		if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
-			this.transform.localScale = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x / (Mathf.Abs(this.GetComponent<Rigidbody2D>().velocity.x)), this.transform.localScale.y);
-		}
+			if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
+				this.transform.localScale = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x / (Mathf.Abs(this.GetComponent<Rigidbody2D>().velocity.x)), this.transform.localScale.y);
+			}
 
-		if (Input.GetKeyDown(KeyCode.Z) && canPeck()) {
-			peck();
-		}
+			if (Input.GetKeyDown(KeyCode.Z) && canPeck()) {
+				peck();
+			}
 
-		if (Input.GetKeyDown (KeyCode.LeftShift) && canLayEgg()) {
-			layEgg();
+			if (Input.GetKeyDown (KeyCode.LeftShift) && canLayEgg()) {
+				layEgg();
+			}
+			layEggTimer -= 1;
+			
+			previouslyGrounded = grounded;
+			
+			handleLevelChange();
 		}
-		
-		layEggTimer -= 1;
-		
-		previouslyGrounded = grounded;
-
-		handleLevelChange();
 	}
 
 	void handleLevelChange () {
