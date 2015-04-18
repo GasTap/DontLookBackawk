@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour {
 				levelLoader = ll;
 			}
 		}
-		levelLoader.loadLevel("level4.5");
+		levelLoader.loadLevel("level1");
 	}
 
 	// true if level can be changed, false if died
