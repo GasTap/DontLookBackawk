@@ -5,16 +5,32 @@ using System.Collections.Generic;
 public class PlatformCollider : MonoBehaviour {
 	
 	public bool grounded = false;
-	private List<GameObject> oWPlatformers = new List<GameObject>();
+	public List<GameObject> oWPlatformers = new List<GameObject>();
 
-	void OnLevelWasLoaded(int level)
+	void OnLevelLoad(List<GameObject> onStage)
 	{
+		Debug.Log("PLAYER LEVEL LOADED");
 		oWPlatformers = new List<GameObject>();
-		oWPlatformers.AddRange(GameObject.FindGameObjectsWithTag("OWPlatform"));
+		foreach (var go in onStage) {
+			if (go.tag == "OWPlatform") {
+				Debug.Log("adding " + go.name);
+				oWPlatformers.Add(go);
+			}
+		}
+	}
+
+	void Start() {
+		var l = new List<GameObject>();
+		l.AddRange(GameObject.FindObjectsOfType<GameObject>());
+		OnLevelLoad(l);
 	}
 
 	void Update()
 	{
+		if (this.gameObject.tag != "Player") {
+			return;
+		}
+
 		foreach(var p in oWPlatformers)
 		{
 			if(p.transform.position.y > transform.position.y - 0.5f)
@@ -47,6 +63,11 @@ public class PlatformCollider : MonoBehaviour {
 			{
 				grounded = true;
 			}
+		}
+
+		if (col.gameObject.tag == "Death")
+		{
+			this.SendMessage("die");
 		}
 	}
 

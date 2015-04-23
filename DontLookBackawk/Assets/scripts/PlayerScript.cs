@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour {	
-	private float jumpPow = 8f;
-	private float flyPow = 3f;
+	private float jumpPow = 10f;
+	private float flyPow = 5f;
+	private float currentFlyPow = 5f;
 	private float horAccel = 0.5f;
 	private float horAccelAir = 0.2f;
 	private float maxHorSpeed = 3.0f;
@@ -26,6 +27,7 @@ public class PlayerScript : MonoBehaviour {
 
 	private bool controlEnabled = true;
 
+	// TODO use or remove?
 	private int stateTimer = 0;
 	private enum State {
 		NORMAL,
@@ -38,15 +40,18 @@ public class PlayerScript : MonoBehaviour {
 	
 	private Animator animator;
 
-	void OnLevelWasLoaded () {
+	public void OnLevelLoad (List<GameObject> onStage) {
 		var stuff = new List<GameObject>();
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("OWPlatform"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Spawn"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Exit"));
+		stuff.AddRange(GameObject.FindGameObjectsWithTag("Death"));
+
+		Debug.Log (stuff);
 		
 		foreach (GameObject i in stuff) {
-			var a = i.GetComponent<Renderer>().enabled = false;
+			i.GetComponent<Renderer>().enabled = false;
 		}
 	}
 
@@ -63,10 +68,17 @@ public class PlayerScript : MonoBehaviour {
 		this.gameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = v ? CollisionDetectionMode2D.Continuous : CollisionDetectionMode2D.None;
 	}
 
+	void releaseFromNest () {
+		previouslyGrounded = true;
+		animator.SetBool("jumped", true);
+	}
+
 	void Start() {
 		animator = this.GetComponent<Animator>();
 	}
 
+	private bool rightDown = false;
+	private bool leftDown = false;
 	void Update() {
 		
 		animator.SetBool("jumped", false);
@@ -77,6 +89,11 @@ public class PlayerScript : MonoBehaviour {
 		
 		if (grounded && !previouslyGrounded) {
 			animator.SetBool("landed", true);
+			currentFlyPow = flyPow;
+		}
+		animator.SetBool("fall", false);
+		if (!grounded && previouslyGrounded && willJump <= 0) {
+			animator.SetBool("fall", true);
 		}
 
 		animator.SetBool("walking", false);
@@ -87,38 +104,48 @@ public class PlayerScript : MonoBehaviour {
 				Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpPow);
 				GetComponent<Rigidbody2D>().velocity = newVelocity;
 			}
+			animator.SetInteger("flap", animator.GetInteger("flap") - 1);
 			if (Input.GetKeyDown(KeyCode.X)) {
 				if (canJump()) {
 					animator.SetBool("jumped", true);
 					jump ();
 				} else {
+					// flap
 					if (GetComponent<Rigidbody2D>().velocity.y <= 0) {
-						Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, (GetComponent<Rigidbody2D>().velocity.y + flyPow <= 0) ? GetComponent<Rigidbody2D>().velocity.y + flyPow : 0);
+						//Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, (GetComponent<Rigidbody2D>().velocity.y + flyPow <= 0) ? GetComponent<Rigidbody2D>().velocity.y + flyPow : 0);
+						Vector2 newVelocity = new Vector2(
+							GetComponent<Rigidbody2D>().velocity.x, 
+							currentFlyPow >= 0 ? currentFlyPow : GetComponent<Rigidbody2D>().velocity.y/2
+						);
+						currentFlyPow -= 1;
 						GetComponent<Rigidbody2D>().velocity = newVelocity;
+						animator.SetInteger("flap", 20);
 					}
 				}
 			}
 
 			if (Input.GetKey(KeyCode.LeftArrow)) {
+				//Debug.Log("left");
 				if (getGrounded()) {
 					animator.SetBool("walking", true);
 				}
 				Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x-(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
 				GetComponent<Rigidbody2D>().velocity = newVelocity;
+				//Debug.Log(newVelocity);
+				setScale();
 			} else if (Input.GetKey(KeyCode.RightArrow)) {
+				//Debug.Log("right");
 				if (getGrounded()) {
 					animator.SetBool("walking", true);
 				}
 				Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x+(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
 				GetComponent<Rigidbody2D>().velocity = newVelocity;
+				//Debug.Log(newVelocity);
+				setScale();
 			} else {
 				if (grounded) {
 					GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
 				}
-			}
-
-			if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
-				this.transform.localScale = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x / (Mathf.Abs(this.GetComponent<Rigidbody2D>().velocity.x)), this.transform.localScale.y);
 			}
 
 			if (Input.GetKeyDown(KeyCode.Z) && canPeck()) {
@@ -133,6 +160,12 @@ public class PlayerScript : MonoBehaviour {
 			previouslyGrounded = grounded;
 			
 			handleLevelChange();
+		}
+	}
+
+	void setScale () {
+		if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
+			this.transform.localScale = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x / (Mathf.Abs(this.GetComponent<Rigidbody2D>().velocity.x)), this.transform.localScale.y);
 		}
 	}
 
@@ -156,7 +189,10 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void die () {
-		// TODO
+		// TODO die animation
+		Debug.Log ("die");
+		GameController.reloadLevel();
+		this.transform.position = new Vector2(GlobalGameState.playerEntrancePosition.x, GlobalGameState.playerEntrancePosition.y);
 	}
 
 	void setPos (Vector2 pos) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
@@ -7,11 +8,16 @@ public class GameController : MonoBehaviour {
 
 	public static LevelData currentLevelData;
 
+	public static List<GameObject> globalObjects;
+
 	void Start () {
 		Debug.Log("initialising game");
 		Object[] staticObjects = GameObject.FindObjectsOfType(typeof(GameObject));
+		globalObjects = new List<GameObject>();
+		// TODO potentially don't have individual scenes for screens
 		foreach (GameObject o in staticObjects) {
-			DontDestroyOnLoad(o);
+			globalObjects.Add(o);
+			//DontDestroyOnLoad(o);
 			LevelLoader ll = o.GetComponent<LevelLoader>();
 			if (ll) {
 				levelLoader = ll;
@@ -24,6 +30,7 @@ public class GameController : MonoBehaviour {
 	public static bool playerChangeLevel (int dir, Vector2 pos, Vector2 vel) {
 		switch (dir) {
 		case LevelData.RIGHT:
+			Debug.Log (currentLevelData.rightExit);
 			if (currentLevelData.rightExit != LevelData.NO_LEVEL) {
 				levelLoader.loadLevel(currentLevelData.rightExit, pos, vel, LevelData.RIGHT);
 				return true;
@@ -49,6 +56,10 @@ public class GameController : MonoBehaviour {
 			break;
 		}
 		return false;
+	}
+
+	public static void reloadLevel () {
+		levelLoader.reloadLevel();
 	}
 
 }

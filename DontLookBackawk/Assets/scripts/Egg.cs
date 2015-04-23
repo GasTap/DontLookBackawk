@@ -18,6 +18,10 @@ public class Egg : MonoBehaviour {
 		}
 	}
 
+	public void die () {
+		Destroy(this.gameObject);
+	}
+
 	public void breakEgg () {
 		Debug.Log("BREAK");
 		GetComponent<Rigidbody2D>().fixedAngle = true;
