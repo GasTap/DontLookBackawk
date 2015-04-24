@@ -18,6 +18,7 @@ public class level1Controller : MonoBehaviour {
 			player.SendMessage("disablePhysics");
 			// TODO add fadein prefab to scene
 			Instantiate(BlackOverlay, new Vector3(0,0,-2), Quaternion.identity);
+			GameObject.Find("MusicManager").SendMessage("stopMusic");
 		}
 	}
 

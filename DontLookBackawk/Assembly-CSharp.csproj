@@ -59,6 +59,7 @@
      <Compile Include="Assets\scripts\level scripts\LevelLoader.cs" />
      <Compile Include="Assets\scripts\level scripts\level1Controller.cs" />
      <Compile Include="Assets\scripts\level scripts\level3controller.cs" />
+     <Compile Include="Assets\scripts\level scripts\level5controller.cs" />
      <Compile Include="Assets\scripts\level scripts\level6controller.cs" />
      <Compile Include="Assets\scripts\spawn.cs" />
  <Reference Include="UnityEngine.UI">

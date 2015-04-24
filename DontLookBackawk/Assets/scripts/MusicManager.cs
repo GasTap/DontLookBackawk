@@ -16,17 +16,16 @@ public class MusicManager : MonoBehaviour {
 		if (currentClip == null) { return; }
 		if (currentMusicIndex != targetMusicIndex) {
 			if (volume <= 0) {
-				// TODO switch tracks
-				currentMusicIndex = targetMusicIndex;
-				setTrack(targetMusicIndex);
-				volume = 1;
+				if (targetMusicIndex != -1) {
+					currentMusicIndex = targetMusicIndex;
+					setTrack(targetMusicIndex);
+					volume = 1;
+				}
 			} else {
-				// TODO fade out volume
 				volume -= fadeSpeed;
 			}
 		} else {
 			if (volume < 1) {
-				// TODO fade in volume
 				volume += fadeSpeed;
 			} else {
 				volume = 1;
@@ -61,5 +60,13 @@ public class MusicManager : MonoBehaviour {
 		var al = this.gameObject.GetComponent<AudioSource>();
 		al.clip = audioClips[index];
 		al.Play ();
+	}
+
+	public void stopMusic () {
+		this.gameObject.GetComponent<AudioSource>().Stop ();
+	}
+
+	public void fadeOut () {
+		targetMusicIndex = -1;
 	}
 }
