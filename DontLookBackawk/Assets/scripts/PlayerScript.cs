@@ -41,14 +41,13 @@ public class PlayerScript : MonoBehaviour {
 	private Animator animator;
 
 	public void OnLevelLoad (List<GameObject> onStage) {
+		if (!GameController.hideDebugObjects) { return; }
 		var stuff = new List<GameObject>();
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Platform"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("OWPlatform"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Spawn"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Exit"));
 		stuff.AddRange(GameObject.FindGameObjectsWithTag("Death"));
-
-		Debug.Log (stuff);
 		
 		foreach (GameObject i in stuff) {
 			i.GetComponent<Renderer>().enabled = false;

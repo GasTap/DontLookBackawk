@@ -12,6 +12,7 @@ public class level3controller : MonoBehaviour {
 		Vector2 position = player.transform.position;
 		Vector2 velocity = player.GetComponent<Rigidbody2D>().velocity;
 
+		position.x = bottomSpawn.transform.position.x;
 		position.y = bottomSpawn.transform.position.y;
 		velocity.y = 6;
 		velocity.x = 2;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
+	public static bool hideDebugObjects = false;
+
 	private static LevelLoader levelLoader;
 
 	public static LevelData currentLevelData;
