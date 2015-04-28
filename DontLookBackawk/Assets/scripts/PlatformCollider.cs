@@ -5,21 +5,22 @@ using System.Collections.Generic;
 public class PlatformCollider : MonoBehaviour {
 	
 	public bool grounded = false;
-	public List<GameObject> oWPlatformers = new List<GameObject>();
+	private List<GameObject> oWPlatformers = new List<GameObject>();
 
 	void OnLevelLoad(List<GameObject> onStage)
 	{
-		Debug.Log("PLAYER LEVEL LOADED");
 		oWPlatformers = new List<GameObject>();
 		foreach (var go in onStage) {
-			if (go.tag == "OWPlatform") {
+			if (go.tag == "OWPlatform" && go.activeInHierarchy) {
 				Debug.Log("adding " + go.name);
 				oWPlatformers.Add(go);
 			}
 		}
 	}
 
+	PlayerInputSystem pis;
 	void Start() {
+		pis = GameObject.Find("PlayerInput").GetComponent<PlayerInputSystem>();
 		var l = new List<GameObject>();
 		l.AddRange(GameObject.FindObjectsOfType<GameObject>());
 		OnLevelLoad(l);
@@ -27,7 +28,8 @@ public class PlatformCollider : MonoBehaviour {
 
 	void Update()
 	{
-		if (this.gameObject.tag != "Player") {
+		// TODO this means only the player can use one way platforms
+		if (pis.controlledActor != this.gameObject) {
 			return;
 		}
 

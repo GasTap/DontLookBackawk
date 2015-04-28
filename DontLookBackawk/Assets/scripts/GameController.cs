@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour {
 	public static LevelData currentLevelData;
 
 	public static List<GameObject> globalObjects;
+	
+	public static float xBound = 7f;
+	public static float yBound = (7 * 3 / 4f);
 
 	void Start () {
 		Debug.Log("initialising game");
@@ -28,11 +31,9 @@ public class GameController : MonoBehaviour {
 		levelLoader.loadLevel("level1");
 	}
 
-	// true if level can be changed, false if died
 	public static bool playerChangeLevel (int dir, Vector2 pos, Vector2 vel) {
 		switch (dir) {
 		case LevelData.RIGHT:
-			Debug.Log (currentLevelData.rightExit);
 			if (currentLevelData.rightExit != LevelData.NO_LEVEL) {
 				levelLoader.loadLevel(currentLevelData.rightExit, pos, vel, LevelData.RIGHT);
 				return true;

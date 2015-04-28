@@ -5,25 +5,27 @@ public class level1Controller : MonoBehaviour {
 
 	private GameObject player;
 	public Transform BlackOverlay;
+	public GameObject playerSpawn;
 
 	private bool sequenceEnabled = false;
 
 	void Start () {
 		sequenceEnabled = GlobalGameState.playedOpeningAnimation == false;
+		// TODO instantiate a prefab player
 		if (sequenceEnabled) {
-			player = GameObject.FindGameObjectWithTag("Player");
+			playerSpawn.name = "Player";
+			player = playerSpawn;
 			player.transform.position = new Vector2(-5, -2.3f);
-			Debug.Log(player);
-			player.SendMessage("disableControl");
+			GameObject.Find("PlayerInput").SendMessage("removeControlledActor");
 			player.SendMessage("disablePhysics");
-			// TODO add fadein prefab to scene
 			Instantiate(BlackOverlay, new Vector3(0,0,-2), Quaternion.identity);
 			GameObject.Find("MusicManager").SendMessage("stopMusic");
+		} else {
+			Destroy (playerSpawn);
 		}
 	}
 
 	private int i = 0;
-	// TODO fade in, have chicken sleeping animation, animation wakes up, replace animation with player, enable controls
 	void Update()
 	{
 		if (!sequenceEnabled) { return; }
@@ -32,7 +34,7 @@ public class level1Controller : MonoBehaviour {
 
 		GameObject.Find("MusicManager").SendMessage("switchMusicByName", "4");
 
-		player.SendMessage("enableControl");
+		GameObject.Find("PlayerInput").SendMessage("setControlledActor", player);
 		player.SendMessage("enablePhysics");
 		player.SendMessage("releaseFromNest");
 

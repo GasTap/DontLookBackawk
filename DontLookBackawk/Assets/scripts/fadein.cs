@@ -5,13 +5,13 @@ public class fadein : MonoBehaviour {
 
 	public int duration = 1000;
 
-	private Renderer renderer;
+	private Renderer rendererComponent;
 
 	void Start () {
-		renderer = this.GetComponent<Renderer>();
-		var c = renderer.material.color;
+		rendererComponent = this.GetComponent<Renderer>();
+		var c = rendererComponent.material.color;
 		c.a = 1;
-		renderer.material.color = c;
+		rendererComponent.material.color = c;
 	}
 
 	private float i = 0;
@@ -21,8 +21,8 @@ public class fadein : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 		var v = 1 - (i / duration);
-		var c = renderer.material.color;
+		var c = rendererComponent.material.color;
 		c.a = v;
-		renderer.material.color = c;
+		rendererComponent.material.color = c;
 	}
 }
