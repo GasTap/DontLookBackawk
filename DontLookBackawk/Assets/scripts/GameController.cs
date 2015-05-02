@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
 				levelLoader = ll;
 			}
 		}
-		levelLoader.loadLevel("level1");
+		levelLoader.loadLevel("level7");
 	}
 
 	public static bool playerChangeLevel (int dir, Vector2 pos, Vector2 vel) {

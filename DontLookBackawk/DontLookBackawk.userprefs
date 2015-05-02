@@ -1,17 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/ai/ChickenAITest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/PlayerInputSystem.cs">
     <Files>
-      <File FileName="Assets/scripts/GameController.cs" Line="10" Column="2" />
-      <File FileName="Assets/scripts/PlayerInputSystem.cs" Line="23" Column="18" />
+      <File FileName="Assets/scripts/GameController.cs" Line="19" Column="34" />
+      <File FileName="Assets/scripts/PlayerInputSystem.cs" Line="55" Column="59" />
       <File FileName="Assets/scripts/PlatformCollider.cs" Line="10" Column="18" />
-      <File FileName="Assets/scripts/ai/ChickenAITest.cs" Line="15" Column="3" />
+      <File FileName="Assets/scripts/ai/ChickenAITest.cs" Line="4" Column="41" />
       <File FileName="Assets/scripts/level scripts/LevelLoader.cs" Line="195" Column="25" />
-      <File FileName="Assets/scripts/level scripts/level1Controller.cs" Line="17" Column="4" />
-      <File FileName="Assets/scripts/PlayerScript.cs" Line="54" Column="25" />
+      <File FileName="Assets/scripts/level scripts/level1Controller.cs" Line="20" Column="41" />
+      <File FileName="Assets/scripts/PlayerScript.cs" Line="24" Column="2" />
       <File FileName="Assets/scripts/ActorBehaviour.cs" Line="5" Column="18" />
       <File FileName="Assets/scripts/ai/AIBehaviour.cs" Line="4" Column="42" />
       <File FileName="Assets/scripts/level scripts/level3controller.cs" Line="10" Column="96" />
+      <File FileName="Assets/scripts/ai/FoxAI.cs" Line="28" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerInputSystem : MonoBehaviour {
 
 	public GameObject controlledActor;
+	public Transform Player;
 
 	public GameObject getControlActor () {
 		return controlledActor;
@@ -48,7 +49,10 @@ public class PlayerInputSystem : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
-			// TODO spawn player at mouse
+			var mp = Input.mousePosition;
+			Debug.Log(mp.x);
+			Debug.Log(mp.y);
+			Instantiate(Player, new Vector3(mp.x/100 - 3.5f,mp.y/100 - 3.5f,0), Quaternion.identity);
 		}
 
 		if (controlledActor == null) { return; }
