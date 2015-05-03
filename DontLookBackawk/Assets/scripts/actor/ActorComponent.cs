@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerScript : MonoBehaviour, ActorBehaviour {	
+public class ActorComponent : MonoBehaviour, ActorBehaviour {	
 	private float jumpPow = 10f;
 	private float flyPow = 5f;
 	private float currentFlyPow = 5f;
@@ -11,16 +11,16 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 	private float maxHorSpeed = 3.0f;
 	
 	public GameObject eggPrefab;
-
+	
 	private float eggBoostVelAir   = -2f;
 	private float eggBoostVelGround = -4f;
 	private float eggDistX  = 0.5f;
 	private float eggDistY  = -0.2f;
-
+	
 	private int layEggTimer = 0;	
 	private int willJump = 0;	
 	private bool previouslyGrounded = false;
-
+	
 	// TODO use or remove?
 	private int stateTimer = 0;
 	private enum State {
@@ -39,18 +39,18 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 	private PlayerInputSystem inputSystem;
 	private Animator animator;
 	private PlatformCollider platformCollider;
-
+	
 	void releaseFromNest () {
 		previouslyGrounded = true;
 		animator.SetBool("jumped", true);
 	}
-
+	
 	void Start() {
 		animator = this.GetComponent<Animator>();
 		inputSystem = GameObject.Find("PlayerInput").GetComponent<PlayerInputSystem>();
 		platformCollider = GetComponent<PlatformCollider>();
 	}
-
+	
 	public void UpdateActor() {
 		
 		animator.SetBool("jumped", false);
@@ -67,9 +67,9 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 		if (!grounded && previouslyGrounded && willJump <= 0) {
 			animator.SetBool("fall", true);
 		}
-
+		
 		animator.SetBool("walking", false);
-
+		
 		willJump -= 1;
 		if (willJump == 1) {
 			Vector2 newVelocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpPow);
@@ -81,7 +81,7 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 		
 		previouslyGrounded = grounded;
 	}
-
+	
 	void setScale () {
 		if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
 			this.transform.localScale = new Vector2(
@@ -90,7 +90,7 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 				);
 		}
 	}
-
+	
 	// TODO make all this stuff an interface
 	public bool physicsEnabled = true;
 	void disablePhysics() { setPhysicsEnabled(false); }
@@ -100,9 +100,9 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 		this.gameObject.GetComponent<Rigidbody2D>().isKinematic = !v;
 		this.gameObject.GetComponent<Rigidbody2D>().collisionDetectionMode = v ? 
 			CollisionDetectionMode2D.Continuous : 
-			CollisionDetectionMode2D.None;
+				CollisionDetectionMode2D.None;
 	}
-
+	
 	public void control_left () {
 		if (getGrounded()) {
 			animator.SetBool("walking", true);
@@ -114,7 +114,7 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 		GetComponent<Rigidbody2D>().velocity = newVelocity;
 		setScale();
 	}
-
+	
 	public void control_right () {
 		if (getGrounded()) {
 			animator.SetBool("walking", true);
@@ -123,13 +123,13 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 		GetComponent<Rigidbody2D>().velocity = newVelocity;
 		setScale();
 	}
-
+	
 	public void control_still () {
 		if (getGrounded()) {
 			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
 		}
 	}
-
+	
 	public void control_jump () {
 		if (canJump()) {
 			animator.SetBool("jumped", true);
@@ -148,19 +148,19 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 			}
 		}
 	}
-
+	
 	public void control_attack () {
 		if (canPeck()) {
 			peck();
 		}
 	}
-
+	
 	public void control_special () {
 		if (canLayEgg()) {
 			layEgg();
 		}
 	}
-
+	
 	public void control_die () {
 		// TODO die animation
 		Debug.Log ("die");
@@ -170,20 +170,20 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
-
+	
 	public void die () {
 		control_die();
 	}
-
+	
 	void setPos (Vector2 pos) {
 		this.transform.position = pos;
 	}
-
+	
 	bool canPeck () {
 		// TODO
 		return true;
 	}
-
+	
 	void peck() {
 		// TODO
 		return;
@@ -192,7 +192,7 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 	bool canJump () {
 		return willJump <= 0 && getGrounded();
 	}
-
+	
 	void jump () {
 		willJump = 8;
 	}
@@ -203,17 +203,17 @@ public class PlayerScript : MonoBehaviour, ActorBehaviour {
 	float getDir () { 
 		return Mathf.Sign(transform.localScale.x); 
 	}
-
+	
 	bool canLayEgg () {
 		return layEggTimer <= 0;
 	}
-
+	
 	void layEgg () {
 		layEggTimer = 50;
 		Vector2 newVelocity = new Vector2(
 			GetComponent<Rigidbody2D>().velocity.x + (getGrounded() ? 0 : getDir() * 1), 
-		    GetComponent<Rigidbody2D>().velocity.y - (getGrounded() ? eggBoostVelGround : eggBoostVelAir)
-		    );
+			GetComponent<Rigidbody2D>().velocity.y - (getGrounded() ? eggBoostVelGround : eggBoostVelAir)
+			);
 		GetComponent<Rigidbody2D>().velocity = newVelocity;
 		GameObject egg = (GameObject)Instantiate(eggPrefab,eggPos(), Quaternion.identity);
 		egg.GetComponent<Rigidbody2D>().velocity = new Vector2(getDir() * (getGrounded() ? -0.2f : -1),0.2f);

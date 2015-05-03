@@ -17,9 +17,9 @@ public class FoxAI : AIBehaviour {
 
 	private int direction = 1;
 
-	PlayerScript ps;
+	ActorComponent ps;
 	void Start () {
-		ps = this.gameObject.GetComponent<PlayerScript>();
+		ps = this.gameObject.GetComponent<ActorComponent>();
 	}
 
 	// Update is called once per frame

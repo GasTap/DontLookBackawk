@@ -4,10 +4,10 @@ using System.Collections;
 public class ChickenAITest : AIBehaviour {
 
 	int i = -100;
-	PlayerScript ps;
+	ActorComponent ac;
 
 	void Start () {
-		this.ps = this.GetComponent<PlayerScript>();
+		this.ac = this.GetComponent<ActorComponent>();
 	}
 
 	void Update () {
@@ -18,16 +18,16 @@ public class ChickenAITest : AIBehaviour {
 
 		if (i >= 0) {
 			if (i == 0) {
-				ps.control_special();
+				ac.control_special();
 			} else {
-				ps.control_right();
+				ac.control_right();
 			}
 		} else {
-			ps.control_left();
+			ac.control_left();
 		}
 		if (i > 100) {
 			i = -100;
-			ps.control_jump();
+			ac.control_jump();
 		}
 	}
 }
