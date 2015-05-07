@@ -32,6 +32,7 @@ public class MusicManager : MonoBehaviour {
 			}
 		}
 		this.gameObject.GetComponent<AudioSource>().volume = volume;
+		volume = 0;
 	}
 
 	public void switchMusicByIndex (int index) {

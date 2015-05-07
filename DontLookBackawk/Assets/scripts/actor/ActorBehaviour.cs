@@ -10,4 +10,5 @@ public interface ActorBehaviour {
 	void control_attack ();
 	void control_special ();
 	void control_die ();
+	void control_take_damage (float amount);
 }

@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ActorComponent : MonoBehaviour, ActorBehaviour {	
+public class ActorComponent : MonoBehaviour, ActorBehaviour {
+	public float hp = 1;
+
 	private float jumpPow = 10f;
 	private float flyPow = 5f;
 	private float currentFlyPow = 5f;
@@ -170,6 +172,14 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+	public void control_take_damage (float amount) {
+		// TODO knockback and stuff
+		hp -= amount;
+		if (hp <= 0) {
+			die();
+		}
+	}
 	
 	public void die () {
 		control_die();
@@ -218,7 +228,7 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 		GameObject egg = (GameObject)Instantiate(eggPrefab,eggPos(), Quaternion.identity);
 		egg.GetComponent<Rigidbody2D>().velocity = new Vector2(getDir() * (getGrounded() ? -0.2f : -1),0.2f);
 		egg.GetComponent<Rigidbody2D>().angularVelocity = eggPrefab.GetComponent<Rigidbody2D>().velocity.x;
-		
+		egg.GetComponent<Egg>().owner = this.gameObject;
 		transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f);
 	}
 	

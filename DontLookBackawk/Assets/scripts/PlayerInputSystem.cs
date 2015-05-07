@@ -18,14 +18,28 @@ public class PlayerInputSystem : MonoBehaviour {
 		controlledActor = null;
 	}
 
+	private void removeControl () {
+		if (controlledActor.GetComponent<AIBehaviour>()) {
+			controlledActor.GetComponent<AIBehaviour>().enabled = true;
+		}
+		controlledActor = null;
+	}
+
+	private void assumeControl (GameObject a) {
+		if (controlledActor != null) {
+			removeControl();
+		}
+		controlledActor = a;
+		if (controlledActor.GetComponent<AIBehaviour>()) {
+			controlledActor.GetComponent<AIBehaviour>().enabled = false;
+		}
+	}
+
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.P)) {
 			var actors = GameObject.FindGameObjectsWithTag("Actor");
 			if (controlledActor == null) {
-				controlledActor = actors[0];
-				if (controlledActor.GetComponent<AIBehaviour>()) {
-					controlledActor.GetComponent<AIBehaviour>().enabled = false;
-				}
+				assumeControl(actors[0]);
 			} else {
 				var currentPlayer = 0;
 				var c = 0;
@@ -36,15 +50,7 @@ public class PlayerInputSystem : MonoBehaviour {
 					}
 					c += 1;
 				}
-				var aib = controlledActor.GetComponent<AIBehaviour>();
-				if (aib) {
-					aib.enabled = true;
-				}
-				controlledActor = actors[(c + 1) % actors.Length];
-				aib = controlledActor.GetComponent<AIBehaviour>();
-				if (aib) {
-					aib.enabled = false;
-				}
+				assumeControl(actors[(c + 1) % actors.Length]);
 			}
 		}
 
@@ -52,7 +58,8 @@ public class PlayerInputSystem : MonoBehaviour {
 			var mp = Input.mousePosition;
 			Debug.Log(mp.x);
 			Debug.Log(mp.y);
-			Instantiate(Player, new Vector3(mp.x/100 - 3.5f,mp.y/100 - 3.5f,0), Quaternion.identity);
+			var t = (Transform)(Instantiate(Player, new Vector3(mp.x/100 - 3.5f,mp.y/100 - 3.5f,0), Quaternion.identity));
+			assumeControl(t.gameObject);
 		}
 
 		if (controlledActor == null) { return; }
