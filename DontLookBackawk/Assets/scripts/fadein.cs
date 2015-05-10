@@ -3,14 +3,15 @@ using System.Collections;
 
 public class fadein : MonoBehaviour {
 
-	public int duration = 1000;
+	public float duration = 1000;
+	public bool fadeOut = false;
 
 	private Renderer rendererComponent;
 
 	void Start () {
 		rendererComponent = this.GetComponent<Renderer>();
 		var c = rendererComponent.material.color;
-		c.a = 1;
+		c.a = fadeOut ? 0 : 1;
 		rendererComponent.material.color = c;
 	}
 
@@ -18,9 +19,9 @@ public class fadein : MonoBehaviour {
 	void Update () {
 		i += 16.666f; // TODO use actual time difference
 		if (i > duration) {
-			Destroy (this.gameObject);
+			return;
 		}
-		var v = 1 - (i / duration);
+		var v = fadeOut ? i / duration : 1 - (i / duration);
 		var c = rendererComponent.material.color;
 		c.a = v;
 		rendererComponent.material.color = c;

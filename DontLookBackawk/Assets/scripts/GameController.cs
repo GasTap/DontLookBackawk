@@ -15,12 +15,30 @@ public class GameController : MonoBehaviour {
 	public static float xBound = 7f;
 	public static float yBound = (7 * 3 / 4f);
 
-	void Start () {
+	public Transform FadeOut;
+
+	public List<GameObject> doNotKeep;
+
+	// TODO need to reset stuff if they start again after finishing the game
+	public void initializeGame (float delay) {
+		StartCoroutine(_initializeGame(delay));
+	}
+
+	private IEnumerator _initializeGame (float delay) {
+		var f = Instantiate(FadeOut);
+		f.transform.position = new Vector3(0,0,-1);
+		f.GetComponent<fadein>().duration = delay;
+
+		Random.seed = 1234;
+		
+		yield return new WaitForSeconds(delay / 1000);
+		
 		Debug.Log("initialising game");
 		Object[] staticObjects = GameObject.FindObjectsOfType(typeof(GameObject));
 		globalObjects = new List<GameObject>();
 		// TODO potentially don't have individual scenes for screens
 		foreach (GameObject o in staticObjects) {
+			if (o == f.gameObject || doNotKeep.Contains(o)) { continue; }
 			globalObjects.Add(o);
 			//DontDestroyOnLoad(o);
 			LevelLoader ll = o.GetComponent<LevelLoader>();
@@ -28,8 +46,10 @@ public class GameController : MonoBehaviour {
 				levelLoader = ll;
 			}
 		}
-		levelLoader.loadLevel("level7");
+		levelLoader.loadLevel("level1");
 	}
+
+	void Start () {}
 
 	public static bool playerChangeLevel (int dir, Vector2 pos, Vector2 vel) {
 		switch (dir) {

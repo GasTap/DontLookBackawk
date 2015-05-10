@@ -53,6 +53,7 @@
      <Compile Include="Assets\scripts\MusicManager.cs" />
      <Compile Include="Assets\scripts\PlatformCollider.cs" />
      <Compile Include="Assets\scripts\PlayerInputSystem.cs" />
+     <Compile Include="Assets\scripts\RemoveWhenOffScreen.cs" />
      <Compile Include="Assets\scripts\actor\ActorBehaviour.cs" />
      <Compile Include="Assets\scripts\actor\ActorComponent.cs" />
      <Compile Include="Assets\scripts\ai\AIBehaviour.cs" />
@@ -60,6 +61,7 @@
      <Compile Include="Assets\scripts\ai\FoxAI.cs" />
      <Compile Include="Assets\scripts\exit.cs" />
      <Compile Include="Assets\scripts\fadein.cs" />
+     <Compile Include="Assets\scripts\invisible.cs" />
      <Compile Include="Assets\scripts\level scripts\LevelData.cs" />
      <Compile Include="Assets\scripts\level scripts\LevelLoader.cs" />
      <Compile Include="Assets\scripts\level scripts\level1Controller.cs" />
