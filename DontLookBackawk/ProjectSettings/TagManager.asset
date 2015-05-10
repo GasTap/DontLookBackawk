@@ -11,6 +11,7 @@ TagManager:
   - background
   - Death
   - Actor
+  - Egg
   layers:
   - Default
   - TransparentFX
