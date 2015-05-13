@@ -5,7 +5,7 @@ public class Egg : MonoBehaviour {
 
 	public float damage = 1;
 
-	public float crackVelocity = 3;
+	public float crackVelocity = 4;
 	private bool broken = false;
 
 	public GameObject owner;

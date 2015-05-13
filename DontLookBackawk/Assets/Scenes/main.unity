@@ -485,7 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeSpeed: .00499999989
   audioClips:
-  - {fileID: 8300000, guid: 1fbeca77367fc439e8e09540b677fa3a, type: 3}
+  - {fileID: 0}
   - {fileID: 8300000, guid: 7a623fa308c4c4d3380e4e716b17fa94, type: 3}
   - {fileID: 8300000, guid: 93c757a0a90c1410f834566843be96f5, type: 3}
   - {fileID: 8300000, guid: 21eccc75e02b94ad681082464cfde3dd, type: 3}

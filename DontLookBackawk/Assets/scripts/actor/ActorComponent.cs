@@ -5,19 +5,19 @@ using System.Collections.Generic;
 public class ActorComponent : MonoBehaviour, ActorBehaviour {
 	public float hp = 1;
 
-	private float jumpPow = 10f;
-	private float flyPow = 5f;
-	private float currentFlyPow = 5f;
-	private float horAccel = 0.5f;
-	private float horAccelAir = 0.2f;
-	private float maxHorSpeed = 3.0f;
+	private float jumpPow = 8.9f;
+	private float flyPow = 2.7f;
+	private float currentFlyPow = 2.7f;
+	private float horAccel = 1.3f;
+	private float horAccelAir = 1f;
+	private float maxHorSpeed = 4.0f;
 	
 	public GameObject eggPrefab;
 	
-	private float eggBoostVelAir   = -2f;
-	private float eggBoostVelGround = -4f;
-	private float eggDistX  = 0.5f;
-	private float eggDistY  = -0.2f;
+	private float eggBoostVelAir   = -0.5f;
+	private float eggBoostVelGround = -1f;
+	private float eggDistX  = 0.4f;
+	private float eggDistY  = -0.3f;
 	
 	private int layEggTimer = 0;	
 	private int willJump = 0;	
@@ -133,6 +133,7 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 	}
 	
 	public void control_jump () {
+		animator.SetInteger("flap", 20);
 		if (canJump()) {
 			animator.SetBool("jumped", true);
 			jump ();
@@ -144,9 +145,8 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 					GetComponent<Rigidbody2D>().velocity.x, 
 					currentFlyPow >= 0 ? currentFlyPow : GetComponent<Rigidbody2D>().velocity.y/2
 					);
-				currentFlyPow -= 1;
+				currentFlyPow -= 0.5f;
 				GetComponent<Rigidbody2D>().velocity = newVelocity;
-				animator.SetInteger("flap", 20);
 			}
 		}
 	}
