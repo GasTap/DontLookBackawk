@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PlatformCollider : MonoBehaviour {
 	
 	public bool grounded = false;
+	public Vector2 normal;
 	private List<GameObject> oWPlatformers = new List<GameObject>();
 
 	public string[] standables = {"Platform", "OWPlatform", "Egg"};
@@ -48,13 +49,14 @@ public class PlatformCollider : MonoBehaviour {
 		}
 	}
 
-
 	void OnCollisionStay2D(Collision2D col) {
+		this.gameObject.layer = 1;
+		RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector3.up, 0.6f, 1);
 		foreach (var tag in standables) {
 			if(col.gameObject.tag == tag) {
-				RaycastHit2D ray = Physics2D.Raycast(transform.position - Vector3.up * 0.6f, -Vector2.up, 0.1f);
 				if (ray.collider != null && ray.collider.gameObject.tag == tag) {
 					grounded = true;
+					normal = ray.normal;
 				}
 			}
 		}

@@ -45,7 +45,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 1
-  m_FixedAngle: 1
+  m_FixedAngle: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -57,7 +57,7 @@ CircleCollider2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156564}
   m_Enabled: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6243a9cdefde543af99b9cbacbd94ff7, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
@@ -125,6 +125,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grounded: 0
+  normal: {x: 0, y: 0}
+  standables:
+  - Platform
+  - OWPlatform
+  - Egg
 --- !u!114 &11474152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,7 +141,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d0f3961d2be349e8a31058a49290bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 1
+  jumpPow: 8.89999962
+  flyPow: 2.70000005
+  horAccel: 1.29999995
+  horAccelAir: 1
+  maxHorSpeed: 4
   eggPrefab: {fileID: 100000, guid: e960be8292a0a4dccababef6f828edba, type: 2}
+  eggBoostVelAir: -.5
+  eggBoostVelGround: -1
+  eggDistX: .400000006
+  eggDistY: -.300000012
   physicsEnabled: 1
 --- !u!212 &21295108
 SpriteRenderer:

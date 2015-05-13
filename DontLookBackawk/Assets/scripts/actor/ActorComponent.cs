@@ -5,19 +5,19 @@ using System.Collections.Generic;
 public class ActorComponent : MonoBehaviour, ActorBehaviour {
 	public float hp = 1;
 
-	private float jumpPow = 8.9f;
-	private float flyPow = 2.7f;
+	public float jumpPow = 8.9f;
+	public float flyPow = 2.7f;
 	private float currentFlyPow = 2.7f;
-	private float horAccel = 1.3f;
-	private float horAccelAir = 1f;
-	private float maxHorSpeed = 4.0f;
+	public float horAccel = 1.3f;
+	public float horAccelAir = 1f;
+	public float maxHorSpeed = 4.0f;
 	
 	public GameObject eggPrefab;
 	
-	private float eggBoostVelAir   = -0.5f;
-	private float eggBoostVelGround = -1f;
-	private float eggDistX  = 0.4f;
-	private float eggDistY  = -0.3f;
+	public float eggBoostVelAir   = -0.5f;
+	public float eggBoostVelGround = -1f;
+	public float eggDistX  = 0.4f;
+	public float eggDistY  = -0.3f;
 	
 	private int layEggTimer = 0;	
 	private int willJump = 0;	
@@ -80,20 +80,30 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 		animator.SetInteger("flap", animator.GetInteger("flap") - 1);
 		
 		layEggTimer -= 1;
+
+		// TODO better gameplay in general
+		// TODO have player rotate on surfaces (will need to fall forward and rotate around feet)
+		/*
+		this.transform.rotation = Quaternion.identity;
+		if (getGrounded()) {
+			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
+			var n = GetComponent<PlatformCollider>().normal;
+			this.transform.Rotate(new Vector3(0,0,Mathf.Atan2(n.y,n.x) * 180 / Mathf.PI - 90));
+		}
+		*/
 		
 		previouslyGrounded = grounded;
 	}
 	
-	void setScale () {
+	void setScale (float v) {
 		if (this.GetComponent<Rigidbody2D>().velocity.x != 0) {
 			this.transform.localScale = new Vector2(
-				Mathf.Sign(this.GetComponent<Rigidbody2D>().velocity.x), 
+				Mathf.Sign(v), 
 				this.transform.localScale.y
 				);
 		}
 	}
-	
-	// TODO make all this stuff an interface
+
 	public bool physicsEnabled = true;
 	void disablePhysics() { setPhysicsEnabled(false); }
 	void enablePhysics() { setPhysicsEnabled(true); }
@@ -109,21 +119,40 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 		if (getGrounded()) {
 			animator.SetBool("walking", true);
 		}
-		Vector2 newVelocity = new Vector2(
-			constrainVel(GetComponent<Rigidbody2D>().velocity.x-(getGrounded() ? horAccel : horAccelAir)), 
-			GetComponent<Rigidbody2D>().velocity.y
-			);
+		Vector2 newVelocity;
+		if (GetComponent<Rigidbody2D>().velocity.x <= 1) {
+			float mul = 1;
+			if (getGrounded()) {
+				var n = GetComponent<PlatformCollider>().normal;
+				mul = Mathf.Sin(Mathf.Atan2(n.y,n.x));
+			}
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(-(getGrounded() ? horAccel : horAccelAir) * 10 * mul, 0));
+			newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x),GetComponent<Rigidbody2D>().velocity.y);
+		} else {
+			newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x * 0.9f),GetComponent<Rigidbody2D>().velocity.y);
+		}
 		GetComponent<Rigidbody2D>().velocity = newVelocity;
-		setScale();
+		setScale(-1);
 	}
 	
 	public void control_right () {
 		if (getGrounded()) {
 			animator.SetBool("walking", true);
 		}
-		Vector2 newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x+(getGrounded() ? horAccel : horAccelAir)), GetComponent<Rigidbody2D>().velocity.y);
+		Vector2 newVelocity;
+		if (GetComponent<Rigidbody2D>().velocity.x >= -1) {
+			float mul = 1;
+			if (getGrounded()) {
+				var n = GetComponent<PlatformCollider>().normal;
+				mul = Mathf.Sin (Mathf.Atan2(n.y,n.x));
+			}
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(+(getGrounded() ? horAccel : horAccelAir) * 10 * mul, 0));
+			newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x),GetComponent<Rigidbody2D>().velocity.y);
+		} else {
+			newVelocity = new Vector2(constrainVel(GetComponent<Rigidbody2D>().velocity.x * 0.9f),GetComponent<Rigidbody2D>().velocity.y);
+		}
 		GetComponent<Rigidbody2D>().velocity = newVelocity;
-		setScale();
+		setScale(1);
 	}
 	
 	public void control_still () {
@@ -131,7 +160,8 @@ public class ActorComponent : MonoBehaviour, ActorBehaviour {
 			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 0.95f, GetComponent<Rigidbody2D>().velocity.y);
 		}
 	}
-	
+
+	// TODO variable jumping
 	public void control_jump () {
 		animator.SetInteger("flap", 20);
 		if (canJump()) {
