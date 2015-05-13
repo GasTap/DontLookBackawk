@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MusicManager : MonoBehaviour {
 
-	private float volume = 0;
+	private float volume = 1;
 	private int currentMusicIndex;
 	private int targetMusicIndex;
 
