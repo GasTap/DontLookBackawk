@@ -1,1 +1,11 @@
 Temp
+$DontLookBackawk/Temp/
+$DontLookBackawk/Library/
+$DontLookBackawk/Obj/
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.userprefs
+*.DS_store
+guidmapper
