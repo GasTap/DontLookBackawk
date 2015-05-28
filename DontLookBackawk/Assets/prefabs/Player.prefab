@@ -62,7 +62,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: .479999989
+  m_Radius: .49000001
 --- !u!60 &6029068
 PolygonCollider2D:
   m_ObjectHideFlags: 1

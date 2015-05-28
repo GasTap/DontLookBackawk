@@ -30,6 +30,7 @@ public class Egg : MonoBehaviour {
 			}
 			breakEgg();
 		} else if (col.relativeVelocity.magnitude >= crackVelocity) {
+			// TODO stop the egg from immediately exploding when the player is moving fast and lays an egg
 			breakEgg();
 			if (col.gameObject.tag == "Egg") {
 				col.gameObject.SendMessage("breakEgg");

@@ -51,7 +51,7 @@ public class PlatformCollider : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D col) {
 		this.gameObject.layer = 1;
-		RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector3.up, 0.6f, 1);
+		RaycastHit2D ray = Physics2D.Raycast(transform.position, -Vector3.up, 0.5f, 1);
 		foreach (var tag in standables) {
 			if(col.gameObject.tag == tag) {
 				if (ray.collider != null && ray.collider.gameObject.tag == tag) {
